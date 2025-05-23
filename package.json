@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Helbronner/npm-publish/issues"
   },
-  "homepage": "https://github.com/Helbronner/npm-publish#readme"
+  "homepage": "https://github.com/Helbronner/npm-publish#readme",
+  "dependencies": {
+    "lodash": "^4.17.20"
+  }
 }
