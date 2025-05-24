@@ -1,31 +1,23 @@
-name: Dependabot Auto-Merge
+name: Dependabot auto-merge
+on: pull_request
 
-on:
-  # 触发条件：针对所有分支的 pull_request 事件
-  # pull_request_target 更安全，因为它在目标仓库的上下文中运行，可以访问 secrets
-  # 但使用 pull_request_target 时要非常小心，确保你只操作可信的 PR（例如检查 PR 作者）
-
-  pull_request:
-    branches: [main]
-
-# permissions:
-#   # 需要这些权限来检查 PR 状态、添加标签、合并 PR 和写入内容（例如更新 PR 体）
-#   pull-requests: write
-#   contents: write # 如果需要修改 PR 体或提交状态
-#   statuses: write # 写入提交状态 (可选)
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
-  auto-merge:
-    # 只针对 Dependabot 创建的 PR 运行此作业
-    if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]'
+  dependabot:
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-      contents: write
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == 'Helbronner/npm-publish'
     steps:
-      - name: Merge PR from dependabot
-        uses: fastify/github-action-merge-dependabot@v3
+      - name: Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@d7267f607e9d3fb96fc2fbe83e0af444713e90b7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          target: "minor"
-          merge-method: rebase
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Enable auto-merge for Dependabot PRs
+        if: contains(steps.metadata.outputs.dependency-names, 'my-dependency') && steps.metadata.outputs.update-type == 'version-update:semver-patch'
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
