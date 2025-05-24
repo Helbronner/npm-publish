@@ -1,0 +1,15 @@
+version: 2
+updates:
+  # 为 npm 依赖开启版本更新
+  - package-ecosystem: "npm" # 包生态系统 (例如: npm, pip, maven, bundler, composer, cargo, docker, github-actions, etc.)
+    directory: "/" # package.json 等文件所在的目录 (相对于仓库根目录)
+    schedule:
+      interval: "daily" # 更新检查频率 ("daily", "weekly", "monthly")
+      time: "19:02"
+    open-pull-requests-limit: 10 # 最多允许 Dependabot 打开的 PR 数量
+    labels: # 可选：自动给 PR 添加标签
+      - "dependencies"
+      - "npm"
+    # commit-message: # 可选：自定义提交信息
+    #   prefix: "chore"
+    #   include: "scope"
