@@ -4,64 +4,28 @@ on:
   # 触发条件：针对所有分支的 pull_request 事件
   # pull_request_target 更安全，因为它在目标仓库的上下文中运行，可以访问 secrets
   # 但使用 pull_request_target 时要非常小心，确保你只操作可信的 PR（例如检查 PR 作者）
-  pull_request_target:
-    types: [opened, synchronize, reopened, ready_for_review]
 
-permissions:
-  # 需要这些权限来检查 PR 状态、添加标签、合并 PR 和写入内容（例如更新 PR 体）
-  pull-requests: write
-  contents: write # 如果需要修改 PR 体或提交状态
-  statuses: write # 写入提交状态 (可选)
+  pull_request:
+    branches: [main]
+
+# permissions:
+#   # 需要这些权限来检查 PR 状态、添加标签、合并 PR 和写入内容（例如更新 PR 体）
+#   pull-requests: write
+#   contents: write # 如果需要修改 PR 体或提交状态
+#   statuses: write # 写入提交状态 (可选)
 
 jobs:
   auto-merge:
     # 只针对 Dependabot 创建的 PR 运行此作业
     if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]'
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
     steps:
-      - name: Checkout PR metadata (not the code itself initially for pull_request_target)
-        # 对于 pull_request_target，actions/checkout 默认会检出基础分支
-        # 我们这里主要需要 PR 的信息
-        id: pr_info
-        run: |
-          echo "PR_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
-          echo "PR_AUTHOR=${{ github.event.pull_request.user.login }}" >> $GITHUB_ENV
-          echo "PR_TITLE=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
-          # 你可以在这里添加更多检查，例如检查 PR 标题是否包含 "patch" 或 "minor"（如果你只想自动合并这两类）
-          # 或者检查 PR 是否有特定的 Dependabot 标签
-
-      # 步骤1：等待所有必需的状态检查完成并通过
-      # 注意：GitHub Actions 本身没有直接的 "wait for all checks to pass" 的步骤。
-      # GitHub 的自动合并功能 (通过 API/gh CLI 启用) 会在所有必需检查通过后才合并。
-      # 所以这一步更多的是逻辑上的，确保你的分支保护规则配置正确。
-
-      # 步骤2：如果所有 CI 检查都已在 PR 上下文中成功运行（由另一个工作流或同一工作流的不同作业完成）
-      # 并且你已经通过 if 条件确认了这是 Dependabot 的 PR，就可以尝试合并。
-
-      - name: Enable Auto-Merge for Dependabot PR
-        # 确保所有必需的CI检查（例如 lint, test, build）已经作为必需的状态检查配置在你的分支保护规则中
-        # 只有当这些检查都通过后，GitHub 的自动合并才会真正执行
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # 使用内置的 GITHUB_TOKEN，它有权限操作 PR
-          PR_URL: ${{ github.event.pull_request.html_url }}
-        run: |
-          echo "Attempting to enable auto-merge for PR: $PR_URL by ${{ env.PR_AUTHOR }}"
-          # 使用 GitHub CLI 启用自动合并
-          # 你可以选择合并策略：--merge, --squash, --rebase
-          # --delete-branch 会在合并后删除分支
-          gh pr merge "$PR_URL" --auto --squash --delete-branch
-          echo "Auto-merge enabled for PR: $PR_URL. GitHub will merge it when all required checks pass."
-
-      # (可选) 添加评论到 PR，告知已启用自动合并
-      - name: Add auto-merge comment to PR
-        if: success() # 仅在启用自动合并成功后
-        uses: actions/github-script@v7
+      - name: Merge PR from dependabot
+        uses: fastify/github-action-merge-dependabot@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            github.rest.issues.createComment({
-              issue_number: ${{ github.event.pull_request.number }},
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: '🤖 Auto-merge has been enabled for this Dependabot PR. It will be merged automatically once all required status checks pass.'
-            })
+          target: "minor"
+          merge-method: rebase
