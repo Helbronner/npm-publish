@@ -1,8 +1,11 @@
 // index.js
-console.log("Hello from my Node.js project!");
+// console.log("Hello from my Node.js project!");
 
 function greet(name) {
-    return `Hello, ${name}!`;
+  return `Hello, ${name}!`;
 }
 
-console.log(greet("World"));
+// console.log(greet("World"));
+
+// Export function
+module.exports = { greet };
