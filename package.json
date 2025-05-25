@@ -20,5 +20,8 @@
   "dependencies": {
     "hot-formula-parser": "^3.0.1",
     "lodash": "^4.17.20"
-  }
+  },
+  "files": [
+    "index.js"
+  ]
 }
