@@ -19,5 +19,8 @@
   "homepage": "https://github.com/Helbronner/npm-publish#readme",
   "files": [
     "index.js"
-  ]
+  ],
+  "dependencies": {
+    "lodash": "^4.17.20"
+  }
 }
