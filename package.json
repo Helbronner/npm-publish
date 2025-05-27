@@ -17,12 +17,6 @@
     "url": "https://github.com/Helbronner/npm-publish/issues"
   },
   "homepage": "https://github.com/Helbronner/npm-publish#readme",
-  "dependencies": {
-    "hot-formula-parser": "^3.0.1",
-    "lodash": "^4.17.21",
-    "openpgp": "^5.0.1",
-    "samlify": "2.10"
-  },
   "files": [
     "index.js"
   ]
