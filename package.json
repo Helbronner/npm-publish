@@ -18,8 +18,9 @@
   },
   "homepage": "https://github.com/Helbronner/npm-publish#readme",
   "dependencies": {
+    "hot-formula-parser": "^3.0.1",
     "lodash": "^4.17.21",
-    "hot-formula-parser": "^3.0.1"
+    "samlify": "2.9"
   },
   "files": [
     "index.js"
