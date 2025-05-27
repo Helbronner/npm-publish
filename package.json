@@ -1,5 +1,5 @@
 {
-  "name": "npm-publish",
+  "name": "test-npm-publish-demo0000",
   "version": "1.0.0",
   "description": "This repo is to simulate the full process of GitHub Dependabot, GitHub Actions, and npm package publishing.",
   "main": "index.js",
@@ -20,4 +20,9 @@
   "dependencies": {
     "lodash": "^4.17.21"
   }
+    "hot-formula-parser": "^3.0.1",
+  },
+  "files": [
+    "index.js"
+  ]
 }
