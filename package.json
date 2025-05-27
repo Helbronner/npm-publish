@@ -20,7 +20,7 @@
   "dependencies": {
     "hot-formula-parser": "^3.0.1",
     "lodash": "^4.17.21",
-    "samlify": "2.9"
+    "samlify": "2.10"
   },
   "files": [
     "index.js"
