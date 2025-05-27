@@ -23,6 +23,7 @@
   "dependencies": {
     "base-x": "^5.0.0",
     "hot-formula-parser": "^3.0.0",
+    "http-proxy-middleware": "^3.0.0",
     "lodash": "^4.17.20",
     "vite": "^6.3.0"
   }
