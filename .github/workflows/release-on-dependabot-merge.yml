@@ -5,7 +5,7 @@ name: Release-on-dependabot-merge
 
 on:
   pull_request:
-    types: [closed]
+    types: [opened]
 
 jobs:
   publish-npm:
