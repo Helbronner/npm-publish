@@ -49,8 +49,6 @@ jobs:
 
       - name: Commit change
         run: |
-          # git add .
-          # git commit -m "Bump version" || echo "No changes to commit"
           git push origin main
 
       - run: npm ci
