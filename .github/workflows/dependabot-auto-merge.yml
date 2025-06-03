@@ -49,9 +49,8 @@ jobs:
 
       - name: Commit change
         run: |
-          git branch -a
-          git status
-          git push origin main
+          git push origin HEAD
+          git push orgigin --tags
 
       - run: npm ci
       - run: npm publish
