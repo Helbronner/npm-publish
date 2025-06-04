@@ -49,6 +49,7 @@ jobs:
 
       - name: Commit change
         run: |
+          git show-ref
           git push origin main
           git push orgigin --tags
 
