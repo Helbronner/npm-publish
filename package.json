@@ -1,6 +1,6 @@
 {
   "name": "test-npm-publish-demo0000",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "This repo is to simulate the full process of GitHub Dependabot, GitHub Actions, and npm package publishing.",
   "main": "index.js",
   "scripts": {
