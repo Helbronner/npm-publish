@@ -49,7 +49,7 @@ jobs:
 
       - name: Commit change
         run: |
-          git push origin HEAD
+          git push origin main
           git push orgigin --tags
 
       - run: npm ci
