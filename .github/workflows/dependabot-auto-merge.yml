@@ -52,7 +52,7 @@ jobs:
         run: |
           git show-ref
           git push origin main
-          git push orgigin --tags
+          git push origin --tags
 
       - run: npm ci
       - run: npm publish
