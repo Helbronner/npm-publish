@@ -3,10 +3,12 @@
 
 name: Release-on-dependabot-merge
 
-on:
-  pull_request:
-    types:
-      - closed
+# on:
+#   pull_request:
+#     types:
+#       - closed
+
+on: push
 
 jobs:
   publish-npm:
@@ -32,9 +34,8 @@ jobs:
 
       - name: Commit change
         run: |
-          git add .
-          git commit -m "Bump version" || echo "No changes to commit"
           git push origin main
+          git push origin --tags
 
       - run: npm ci
       - run: npm publish
