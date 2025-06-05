@@ -21,6 +21,16 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
+      - name: Debug
+        run: |
+          echo "PR Event Type: ${{ github.event.action }}"
+          echo "Is PR Merged? ${{ github.event.pull_request.merged }}"
+          echo "User Login: ${{github.event.pull_request.user.login}}"
+          if [[ "${{ github.event.action }}" == "closed" && "${{ github.event.pull_request.merged }}" == "true" ]]; then
+            echo "This PR was just merged!"
+          else
+            echo "This PR is not merged yet, or the event type is not 'closed'."
+          fi
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
