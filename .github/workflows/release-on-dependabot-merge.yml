@@ -3,15 +3,15 @@
 
 name: Release-on-dependabot-merge
 
-# on:
-#   pull_request:
-#     types:
-#       - closed
-
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types:
+      - closed
+
+# on:
+#   push:
+#     branches:
+#       - main
 
 jobs:
   publish-npm:
